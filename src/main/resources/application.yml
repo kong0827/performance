@@ -1,0 +1,28 @@
+server:
+  host: http://localhost
+  port: 8081
+  appName: 管理后台
+  servlet:
+    context-path: /
+
+spring:
+  freemarker:
+    template-loader-path: classpath:/templates/
+    charset: UTF-8
+    cache: false
+    expose-request-attributes: true
+    expose-session-attributes: true
+    expose-spring-macro-helpers: true
+    suffix: .html
+
+
+  mvc:
+    static-path-pattern: classpath:/static
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+
+
+resources:
+  static-location: classpath:/static/,classpath:/templates/
+  cache-period: 0

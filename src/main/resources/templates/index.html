@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绩效管理系统</title>
+
+    <link href="/static/ai/templates/inspinia/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/animate.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="app">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <img alt="image" class="rounded-circle" src="/static/ai/templates/inspinia/img/profile_small.jpg"/>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="block m-t-xs font-bold"><label th:text="${session.userEntitys.name}"></label></span>
+                        </a>
+                    </div>
+                </li>
+                <!-- <li>
+                    <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">系统管理</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/user">用户管理</a></li>
+                        <li><a href="/role">角色管理</a></li>
+                        <li><a href="/department">组织管理</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">绩效管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/indicators">绩效指标</a></li>
+                        <li><a href="/performances">个人绩效目标</a></li>
+                        <li><a href="/report">报表</a></li>
+                    </ul>
+                </li> -->
+            </ul>
+
+        </div>
+    </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            <form role="search" class="navbar-form-custom" action="search_results.html">
+                <div class="form-group">
+                    <input type="text" placeholder="" class="form-control" name="top-search" id="top-search">
+                </div>
+            </form>
+        </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <a href="/">
+                        <i class="fa fa-sign-out"></i> Log out
+                    </a>
+                </li>
+            </ul>
+
+        </nav>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            
+        </div>
+        </div>
+        </div>
+    <!-- Mainly scripts -->
+    <script src="/static/ai/templates/inspinia/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/ai/templates/inspinia/js/popper.min.js"></script>
+    <script src="/static/ai/templates/inspinia/js/bootstrap.js"></script>
+    <script src="/static/ai/templates/inspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/static/ai/templates/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Peity -->
+    <script src="/static/ai/templates/inspinia/js/plugins/peity/jquery.peity.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="/static/ai/templates/inspinia/js/inspinia.js"></script>
+    <script src="/static/ai/templates/inspinia/js/plugins/pace/pace.min.js"></script>
+    <!-- iCheck -->
+    <script src="/static/ai/templates/inspinia/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- Peity -->
+    <script src="/static/ai/templates/inspinia/js/demo/peity-demo.js"></script>
+    <script src='/static/ai/js/base.js'></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+        $(function(){
+        	$.ajax("/menu/menuList", {  
+    			type: 'POST',
+    		    data : {},  
+    		    dataType : 'json',  
+    		    success: function(resultJson) {
+    		    	console.log(resultJson);
+    		    	if (resultJson.status == ResultStatus.success) {
+    		    		console.log(resultJson);
+    		    		var menuEntities = resultJson.result.menuEntities;
+    		    		var menuLists = resultJson.result.menuLists;
+    	                var html="";
+    	                var htmlNull = 0;
+    	                for (var i = 0; i < menuLists.length; i++) {
+    	                	if(htmlNull==0){
+    	                		html="";
+    	                	}
+    	                	html+="<li class='active'><a href=#><i class='fa "+menuLists[i].icon+"'></i> <span class='nav-label'>"+menuLists[i].name+"</span> <span class='fa arrow'></span></a>";
+    	                	html+="<ul class='nav nav-second-level collapse'>";
+    	                	for (var j = 0; j < menuEntities.length; j++) {
+    	                		if(menuEntities[j].menuId == menuLists[i].id){
+    	                			html+="<li><a href="+menuEntities[j].url+">"+menuEntities[j].name+"</a></li>";
+    	                			htmlNull = 1;
+    	                		}
+    	                	}
+                            html+="</ul>";
+                            html+="</li>";
+    	                }
+    	                $('#side-menu').metisMenu('dispose');
+    	                $("#side-menu").append(html);
+    	                $('#side-menu').metisMenu();
+    		    	}
+    		    },
+    		    error :function(XmlHttpRequest,textStatus, errorThrown){
+    			 	var errMsg = XmlHttpRequest.responseText;
+    			 	console.log(errMsg);
+    		    }
+    		});
+        })
+    </script>
+
+</body>
+
+</html>

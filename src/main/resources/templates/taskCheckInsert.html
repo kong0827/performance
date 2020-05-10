@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link href="/static/ai/templates/inspinia/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/animate.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href='/static/ai/css/element-ui.2.12.0.css'>
+	<link rel="stylesheet" href='/static/ai/plugs/vue-easytable/vue-easytable-master/umd/css/index.css'>
+</head>
+<body>
+<div id="app">
+  <div  class="row">
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-content">
+                <form method="get" id="model">
+                <input v-model="data.id" id="id" name="id" type="text" class="form-control" style="display: none;"/>
+                <input v-model="data.isScore" id="isScore" name="isScore" type="text" class="form-control" style="display: none;"/>
+                    <div class="form-group  row">
+                    	<label class="col-sm-2 col-form-label">任务名称</label>
+                        <div class="col-sm-4">
+                            <input v-model="data.name" id="name" name="name" type="text" readonly
+                                   placeholder=""
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 col-form-label">模板</label>
+                        <div class="col-sm-4">
+                        <select name="templateId" id="templateId" class="form-control">
+                        </select>
+                            <span class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">类型</label>
+                        <div class="col-sm-4">
+                        <select name="type" id="type" class="form-control" readonly>
+                        <option value="月度">月度</option>
+                        <option value="半年度">半年度</option>
+                        <option value="年度">年度</option>
+                        </select>
+                            <span class="form-text m-b-none"></span>
+                        </div>
+                        <label class="col-sm-2 col-form-label">模板</label>
+                        <div class="col-sm-4">
+                        <button type="button" class="btn btn-w-m btn-primary" @click="temp">查看模板</button>
+                            <span class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">审核</label>
+                        <div class="col-sm-4">
+                        <select name="states" id="states" class="form-control">
+                        <option value="0">待审核</option>
+                        <option value="1">通过</option>
+                        <option value="2">不通过</option>
+                        </select>
+                            <span class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                    	<label class="col-sm-2 col-form-label">开始时间</label>
+                        <div class="col-sm-4">
+                            <input  id="startTime" name="startTime" type="text" readonly
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                        <label class="col-sm-2 col-form-label">结束时间</label>
+                        <div class="col-sm-4">
+                            <input  id="endTime" name="endTime" type="text" readonly
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer" style="position: fixed;bottom: 0px;background-color:#f8f8f8;z-index:20000 ;" >
+    <div class="text-right">
+        <button type="button" class="btn btn-w-m btn-primary" @click="submit">提交</button>
+        <button type="button" class="btn btn-w-m btn-default" onclick="closeWin(true);">返回</button>
+    </div>
+</div>
+</div>
+</body>
+	<script src="/static/ai/templates/inspinia/js/jquery-3.1.1.min.js"></script>
+	<script src="/static/ai/plugs/layer/layer.js"></script>
+	<script src='/static/ai/js/jquery-cookie.min.js'></script>
+	<script src='/static/ai/js/axios.min.js'></script>
+	<script src='/static/ai/js/base.js'></script>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+ 	 var data = {
+ 		id:'[[${id}]]',
+        name: '',
+        tempList:[],
+        isScore:0,
+	  };
+  	var app = new Vue({
+      el: '#app',
+      data: {data: data},
+      methods: {
+    	  submit: function () {
+    		  $.ajax("/task/save", {  
+    				type: 'POST',
+    			    data : $("#model").serialize(),  
+    			    dataType : 'json',  
+    			    success: function(resultJson) {
+    			    	if (resultJson.status == ResultStatus.success) {
+    			    		alertMsg.success('操作成功', function () {
+    	                        closeWin(true);
+    	                    });
+    			    	}
+    			    },
+    			    error :function(XmlHttpRequest,textStatus, errorThrown){
+    				 	var errMsg = XmlHttpRequest.responseText;
+    				 	console.log(errMsg);
+    			    }
+    			});
+          },
+          temp: function () {
+        	  for (var i = 0; i < data.tempList.length; i++) {
+    			if(data.tempList[i].id == $("#templateId").val()){
+    				openWin('模板', data.tempList[i].identify, '100%', '100%');
+    			}
+    		  }
+          },
+      },
+      mounted() {
+    	  templateList();
+    	  if(data.id != ""){
+    		  $.ajax("/task/get", {  
+  				type: 'POST',
+  			    data : {id:data.id},  
+  			    dataType : 'json',  
+  			    success: function(resultJson) {
+  			    	console.log(resultJson);
+  			    	if (resultJson.status == ResultStatus.success) {
+  			    		data.id = resultJson.result.id;
+  			    		data.name = resultJson.result.name;
+  			    		data.isScore = resultJson.result.isScore;
+  			    		$("#endTime").val(resultJson.result.endTime);
+  			    		$("#startTime").val(resultJson.result.startTime);
+  			    		$("#templateId").find("option[value = '"+resultJson.result.templateId+"']").attr("selected","selected");
+  			    		$("#states").find("option[value = '"+resultJson.result.states+"']").attr("selected","selected");
+  			    	}
+  			    },
+  			    error :function(XmlHttpRequest,textStatus, errorThrown){
+  				 	var errMsg = XmlHttpRequest.responseText;
+  				 	console.log(errMsg);
+  			    }
+  			});
+    	  }
+      },
+  	});
+  	function templateList(){
+  		$.ajax("/template/find", {  
+			type: 'POST',
+		    data : {},  
+		    dataType : 'json',  
+		    success: function(resultJson) {
+		    	if (resultJson.status == ResultStatus.success) {
+		    		var html="";
+		    		var list = resultJson.result;
+		    		for (var i = 0; i < list.length; i++) {
+		    			html+="<option value="+list[i].id+">"+list[i].name+"</option>";
+		    		}
+		    		$("#templateId").append(html);
+		    		data.tempList = list;
+		    	}
+		    },
+		    error :function(XmlHttpRequest,textStatus, errorThrown){
+			 	var errMsg = XmlHttpRequest.responseText;
+			 	console.log(errMsg);
+		    }
+		});
+  	}
+  </script>
+</html>

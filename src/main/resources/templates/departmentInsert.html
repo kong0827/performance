@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link href="/static/ai/templates/inspinia/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/animate.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href='/static/ai/css/element-ui.2.12.0.css'>
+	<link rel="stylesheet" href='/static/ai/plugs/vue-easytable/vue-easytable-master/umd/css/index.css'>
+</head>
+<body>
+<div id="app">
+  <div  class="row">
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-content">
+                <form method="get" id="model">
+                <input v-model="data.id" id="id" name="id" type="text" class="form-control" style="display: none;"/>
+                    <div class="form-group  row">
+                    	<label class="col-sm-2 col-form-label">名称</label>
+                        <div class="col-sm-4">
+                            <input v-model="data.name" id="name" name="name" type="text"
+                                   placeholder=""
+                                   class="form-control"/>
+                        </div>
+                        <label class="col-sm-2 col-form-label">上级</label>
+                        <div class="col-sm-4">
+                        <select name="departmentId" id="departmentId"
+                                                       class="form-control">
+                            <option value="">当前为最上级</option>
+                        </select>
+                            <span class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer" style="position: fixed;bottom: 0px;background-color:#f8f8f8;z-index:20000 ;" >
+    <div class="text-right">
+        <button type="button" class="btn btn-w-m btn-primary" @click="submit">提交</button>
+        <button type="button" class="btn btn-w-m btn-default" onclick="closeWin(true);">返回</button>
+    </div>
+</div>
+</div>
+</body>
+	<script src="/static/ai/templates/inspinia/js/jquery-3.1.1.min.js"></script>
+	<script src="/static/ai/plugs/layer/layer.js"></script>
+	<script src='/static/ai/js/jquery-cookie.min.js'></script>
+	<script src='/static/ai/js/axios.min.js'></script>
+	<script src='/static/ai/js/base.js'></script>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+ 	 var data = {
+ 		id:'[[${dId}]]',
+        name: '',
+        departmentId:'',
+        roleId:'',
+        account:'',
+        pwd:'',
+	  };
+  	var app = new Vue({
+      el: '#app',
+      data: {data: data},
+      methods: {
+    	  submit: function () {
+    		  $.ajax("/department/save", {  
+    				type: 'POST',
+    			    data : $("#model").serialize(),  
+    			    dataType : 'json',  
+    			    success: function(resultJson) {
+    			    	if (resultJson.status == ResultStatus.success) {
+    			    		alertMsg.success('操作成功', function () {
+    	                        closeWin(true);
+    	                    });
+    			    	}
+    			    },
+    			    error :function(XmlHttpRequest,textStatus, errorThrown){
+    				 	var errMsg = XmlHttpRequest.responseText;
+    				 	console.log(errMsg);
+    			    }
+    			});
+          },
+
+      },
+      mounted() {
+    	  departmentList();
+    	  if(data.id != ""){
+    		  $.ajax("/department/get", {  
+  				type: 'POST',
+  			    data : {id:data.id},  
+  			    dataType : 'json',  
+  			    success: function(resultJson) {
+  			    	if (resultJson.status == ResultStatus.success) {
+  			    		data.name = resultJson.result.name;
+  			    		$("#departmentId").find("option[value = '"+resultJson.result.departmentId+"']").attr("selected","selected");
+  			    	}
+  			    },
+  			    error :function(XmlHttpRequest,textStatus, errorThrown){
+  				 	var errMsg = XmlHttpRequest.responseText;
+  				 	console.log(errMsg);
+  			    }
+  			});
+    	  }
+      },
+  });
+  	function departmentList(){
+  		$.ajax("/department/find", {  
+			type: 'POST',
+		    data : {},  
+		    dataType : 'json',  
+		    success: function(resultJson) {
+		    	if (resultJson.status == ResultStatus.success) {
+		    		var html="";
+		    		var list = resultJson.result;
+		    		for (var i = 0; i < list.length; i++) {
+		    			html+="<option value="+list[i].id+">"+list[i].name+"</option>";
+		    		}
+		    		$("#departmentId").append(html);
+		    	}
+		    },
+		    error :function(XmlHttpRequest,textStatus, errorThrown){
+			 	var errMsg = XmlHttpRequest.responseText;
+			 	console.log(errMsg);
+		    }
+		});
+  	}
+  </script>
+</html>

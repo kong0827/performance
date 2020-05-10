@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绩效管理系统-登录</title>
+    <link href="/static/ai/templates/inspinia/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/static/ai/templates/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+    <link href="/static/ai/templates/inspinia/css/animate.css" rel="stylesheet"/>
+    <link href="/static/ai/templates/inspinia/css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href='/static/ai/plugs/layer/theme/default/layer.css'>
+    <link rel="stylesheet" href='/static/ai/css/mloading.css'>
+    <link rel="stylesheet" href='/static/ai/css/site.css'>
+</head>
+<body class="gray-bg">
+<div style="margin: 0px auto auto auto;text-align: center;padding-top: 100px">
+    <div style="font-size: 80px">绩效管理系统</div>
+</div>
+<div id="app" class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <!--<h3>${AI_SITE_NAME}</h3>-->
+        <p>
+        </p>
+        <p></p>
+        <form class="m-t" role="form" action="" id="model">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="请输入账号" name="account" id="account">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="请输入密码" name="pwd" id="pwd">
+            </div>
+            <button type="button" class="btn btn-primary block full-width m-b" @click="submitForm">登录</button>
+
+        </form>
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="/static/ai/templates/inspinia/js/jquery-3.1.1.min.js"></script>
+<script src="/static/ai/templates/inspinia/js/popper.min.js"></script>
+<script src="/static/ai/templates/inspinia/js/bootstrap.js"></script>
+<script src="/static/ai/plugs/layer/layer.js"></script>
+<script src='/static/ai/js/jquery-cookie.min.js'></script>
+<script src='/static/ai/js/vue-dev.js'></script>
+<script src='/static/ai/js/axios.min.js'></script>
+<script src='/static/ai/js/jquery.validate.min.js'></script>
+<script src='/static/ai/js/messages_zh.min.js'></script>
+<script src='/static/ai/js/mloading.js'></script>
+<script src='/static/ai/js/base.js'></script>
+</body>
+<script type="text/javascript">
+    $(function () {
+        console.log('开始检测浏览器...');
+        if (!supportLocalStorage()) {
+            alertMsg.warn('当前浏览器不支持localStorage技术，建议使用chrome浏览器');
+        }
+    });
+    var data = {
+        account: '',
+        pwd: ''
+    };
+    var app = new Vue({
+        el: '#app',
+        data: {data: data},
+        methods: {
+            submitForm: function (e) {
+                login();
+            }
+        }
+    });
+
+    function login() {
+    	$.ajax("/user/login", {  
+			type: 'POST',
+		    data : $("#model").serialize(), 
+		    dataType : 'json',  
+		    success: function(resultJson) {
+		    	if (resultJson.status == ResultStatus.success) {
+	                alertMsg.success('登陆成功，正在进入系统...');
+	                setTimeout(function () {
+	                    location.href = '/index';
+	                }, 2000);
+	            } else {
+	                alertMsg.error(resultJson.msg);
+	            }
+		    },
+		    error :function(XmlHttpRequest,textStatus, errorThrown){
+			 	var errMsg = XmlHttpRequest.responseText;
+			 	console.log(errMsg);
+		    }
+		});
+    }
+
+    $(document).keyup(function (event) {
+        if (event.keyCode == 13) {
+            login();
+        }
+    });
+</script>
+</html>

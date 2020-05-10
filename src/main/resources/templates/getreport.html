@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/ai/templates/inspinia/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/animate.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href='/static/ai/css/element-ui.2.12.0.css'>
+	<link rel="stylesheet" href='/static/ai/plugs/vue-easytable/vue-easytable-master/umd/css/index.css'>
+	<style type="text/css">
+	table tr{
+		height: 45px;
+	}
+	</style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="app" class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-content">
+            	<table border="1" style="width: 100%;text-align: center;">
+            		<tr>
+            			<td>姓名</td>
+            			<td colspan="2" id="name"></td>
+            			<td>部门/职位或职级</td>
+            			<td colspan="5" id="departmentName"></td>
+            			<td rowspan="3" colspan="4">绩效评估时使用</td>
+            		</tr>
+            		<tr>
+            			<td>直接上级</td>
+            			<td colspan="2" id="names"></td>
+            			<td >间接上级</td>
+            			<td colspan="5" id="namess"></td>
+            		</tr>
+            		<tr>
+            			<td>目标承诺周期</td>
+            			<td colspan="3" style="text-align: left;" id="datas"></td>
+            		</tr>
+            		<tr>
+            			<td rowspan="2">考核维度</td>
+            			<td rowspan="2">绩效指标</td>
+            			<td rowspan="2">指标定义</td>
+            			<td rowspan="2">评估标准</td>
+            			<td colspan="4">绩效目标承诺</td>
+            			<td rowspan="2">分项权重</td>
+            			<td rowspan="2">员工对目标情况进行自评</td>
+            			<td rowspan="2">自评分</td>
+            			<td rowspan="2">直接上级评分</td>
+            			<td rowspan="2">直接上级评价</td>
+            		</tr>
+            		<tr>
+            			<td>未达成</td>
+            			<td>底线</td>
+            			<td>达标</td>
+            			<td>挑战</td>
+            		</tr>
+            		<tr>
+            			<td rowspan="3">服务目标</td>
+            			<td id="iName1"></td>
+            			<td id="define1"></td>
+            			<td id="assessment1"></td>
+            			<td id="lackOf1"></td>
+            			<td id="bottomLine1"></td>
+            			<td id="standard1"></td>
+            			<td id="challenge1"></td>
+            			<td id="weight1"></td>
+            			<td id="completion1"></td>
+            			<td id="score1"></td>
+            			<td id="superiorGrade1"></td>
+            			<td id="superiorEvaluation1"></td>
+            		</tr>
+            		<tr>
+            			<td id="iName2"></td>
+            			<td id="define2"></td>
+            			<td id="assessment2"></td>
+            			<td id="lackOf2"></td>
+            			<td id="bottomLine2"></td>
+            			<td id="standard2"></td>
+            			<td id="challenge2"></td>
+            			<td id="weight2"></td>
+            			<td id="completion2"></td>
+            			<td id="score2"></td>
+            			<td id="superiorGrade2"></td>
+            			<td id="superiorEvaluation2"></td>
+            		</tr>
+            		<tr>
+            			<td id="iName3"></td>
+            			<td id="define3"></td>
+            			<td id="assessment3"></td>
+            			<td id="lackOf3"></td>
+            			<td id="bottomLine3"></td>
+            			<td id="standard3"></td>
+            			<td id="challenge3"></td>
+            			<td id="weight3"></td>
+            			<td id="completion3"></td>
+            			<td id="score3"></td>
+            			<td id="superiorGrade3"></td>
+            			<td id="superiorEvaluation3"></td>
+            		</tr>
+            		<tr>
+            			<td rowspan="3">职业化目标</td>
+            			<td id="iNames1"></td>
+            			<td id="defines1"></td>
+            			<td id="assessments1"></td>
+            			<td id="lackOfs1"></td>
+            			<td id="bottomLines1"></td>
+            			<td id="standards1"></td>
+            			<td id="challenges1"></td>
+            			<td id="weights1"></td>
+            			<td id="completions1"></td>
+            			<td id="scores1"></td>
+            			<td id="superiorGrades1"></td>
+            			<td id="superiorEvaluations1"></td>
+            		</tr>
+            		<tr>
+            			<td id="iNames2"></td>
+            			<td id="defines2"></td>
+            			<td id="assessments2"></td>
+            			<td id="lackOfs2"></td>
+            			<td id="bottomLines2"></td>
+            			<td id="standards2"></td>
+            			<td id="challenges2"></td>
+            			<td id="weights2"></td>
+            			<td id="completions2"></td>
+            			<td id="scores2"></td>
+            			<td id="superiorGrades2"></td>
+            			<td id="superiorEvaluations2"></td>
+            		</tr>
+            		<tr>
+            			<td id="iNames3"></td>
+            			<td id="defines3"></td>
+            			<td id="assessments3"></td>
+            			<td id="lackOfs3"></td>
+            			<td id="bottomLines3"></td>
+            			<td id="standards3"></td>
+            			<td id="challenges3"></td>
+            			<td id="weights3"></td>
+            			<td id="completions3"></td>
+            			<td id="scores3"></td>
+            			<td id="superiorGrades3"></td>
+            			<td id="superiorEvaluations3"></td>
+            		</tr>
+            		<tr>
+            			<td>能力提升</td>
+            			<td id="iName"></td>
+            			<td id="define"></td>
+            			<td id="assessment"></td>
+            			<td id="lackOf"></td>
+            			<td id="bottomLine"></td>
+            			<td id="standard"></td>
+            			<td id="challenge"></td>
+            			<td id="weight"></td>
+            			<td id="completion"></td>
+            			<td id="score"></td>
+            			<td id="superiorGrade"></td>
+            			<td id="superiorEvaluation"></td>
+            		</tr>
+            		<tr>
+            			<td>关键事件加减分项</td>
+            			<td>请填写部门考核指标</td>
+            			<td colspan="7"></td>
+            			<td></td>
+            			<td></td>
+            			<td></td>
+            			<td></td>
+            		</tr>
+            	</table>
+            </div>
+    </div>
+</div>
+        </div>
+        </div>
+        </div>
+    <!-- Mainly scripts -->
+    <script src="/static/ai/templates/inspinia/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/ai/templates/inspinia/js/popper.min.js"></script>
+    <script src="/static/ai/templates/inspinia/js/bootstrap.js"></script>
+    <script src="/static/ai/templates/inspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/static/ai/templates/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Peity -->
+    <script src="/static/ai/templates/inspinia/js/plugins/peity/jquery.peity.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="/static/ai/templates/inspinia/js/inspinia.js"></script>
+    <script src="/static/ai/templates/inspinia/js/plugins/pace/pace.min.js"></script>
+    <!-- iCheck -->
+    <script src="/static/ai/templates/inspinia/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- Peity -->
+    <script src="/static/ai/templates/inspinia/js/demo/peity-demo.js"></script>
+    
+    <script src="/static/ai/plugs/layer/layer.js"></script>
+	<script src='/static/ai/js/jquery-cookie.min.js'></script>
+    <script src='/static/ai/js/vue-dev.js'></script>
+    <script src='/static/ai/js/axios.min.js'></script>
+	<script src='/static/ai/js/jquery.validate.min.js'></script>
+	<script src='/static/ai/js/messages_zh.min.js'></script>
+	<script src='/static/ai/js/mloading.js'></script>
+	<script src='/static/ai/js/base.js'></script>
+	<script src='/static/ai/js/element-ui.2.12.0.js'></script>
+
+<script>
+var data = {
+		id:'[[${userId}]]',
+		taskId:'[[${taskId}]]',
+    };
+    var app = new Vue({
+        el: '#app',
+        data: {data: data},
+        methods: {
+            search: function () {
+            	
+            },
+        },
+        mounted() {
+        	$.ajax("/performances/getServiceList", {  
+    			type: 'POST',
+    		    data : {"id":data.id,"taskId":data.taskId},  
+    		    dataType : 'json',  
+    		    success: function(resultJson) {
+    		    	console.log(resultJson);
+    		    	if (resultJson.status == ResultStatus.success) {
+    		    		var list = resultJson.result.data;
+    		    		for (var i = 0; i < list.length; i++) {
+    		    			$("#iName"+(i+1)).html(list[i].iName);
+    		    			$("#define"+(i+1)).html(list[i].define);
+    		    			$("#assessment"+(i+1)).html(list[i].assessment);
+    		    			$("#lackOf"+(i+1)).html(list[i].lackOf);
+    		    			$("#bottomLine"+(i+1)).html(list[i].bottomLine);
+    		    			$("#standard"+(i+1)).html(list[i].standard);
+    		    			$("#challenge"+(i+1)).html(list[i].challenge);
+    		    			$("#weight"+(i+1)).html(list[i].weight);
+    		    			$("#completion"+(i+1)).html(list[i].completion);
+    		    			$("#score"+(i+1)).html(list[i].score);
+    		    			$("#superiorGrade"+(i+1)).html(list[i].superiorGrade);
+    		    			$("#superiorEvaluation"+(i+1)).html(list[i].superiorEvaluation);
+    		    		}
+    		    	}
+    		    },
+    		    error :function(XmlHttpRequest,textStatus, errorThrown){
+    			 	var errMsg = XmlHttpRequest.responseText;
+    			 	console.log(errMsg);
+    		    }
+    		});
+        	$.ajax("/performances/getProfessionalList", {  
+    			type: 'POST',
+    		    data : {"id":data.id,"taskId":data.taskId},  
+    		    dataType : 'json',  
+    		    success: function(resultJson) {
+    		    	console.log(resultJson);
+    		    	if (resultJson.status == ResultStatus.success) {
+    		    		var list = resultJson.result.data;
+    		    		for (var i = 0; i < list.length; i++) {
+    		    			$("#iNames"+(i+1)).html(list[i].iName);
+    		    			$("#defines"+(i+1)).html(list[i].define);
+    		    			$("#assessments"+(i+1)).html(list[i].assessment);
+    		    			$("#lackOfs"+(i+1)).html(list[i].lackOf);
+    		    			$("#bottomLines"+(i+1)).html(list[i].bottomLine);
+    		    			$("#standards"+(i+1)).html(list[i].standard);
+    		    			$("#challenges"+(i+1)).html(list[i].challenge);
+    		    			$("#weights"+(i+1)).html(list[i].weight);
+    		    			$("#completions"+(i+1)).html(list[i].completion);
+    		    			$("#scores"+(i+1)).html(list[i].score);
+    		    			$("#superiorGrades"+(i+1)).html(list[i].superiorGrade);
+    		    			$("#superiorEvaluations"+(i+1)).html(list[i].superiorEvaluation);
+    		    		}
+    		    	}
+    		    },
+    		    error :function(XmlHttpRequest,textStatus, errorThrown){
+    			 	var errMsg = XmlHttpRequest.responseText;
+    			 	console.log(errMsg);
+    		    }
+    		});
+        	$.ajax("/performances/getAbilityList", {  
+    			type: 'POST',
+    		    data : {"id":data.id,"taskId":data.taskId},  
+    		    dataType : 'json',  
+    		    success: function(resultJson) {
+    		    	console.log(resultJson);
+    		    	if (resultJson.status == ResultStatus.success) {
+    		    		var list = resultJson.result.data;
+    		    		for (var i = 0; i < list.length; i++) {
+    		    			$("#iName").html(list[i].iName);
+    		    			$("#define").html(list[i].define);
+    		    			$("#assessment").html(list[i].assessment);
+    		    			$("#lackOf").html(list[i].lackOf);
+    		    			$("#bottomLine").html(list[i].bottomLine);
+    		    			$("#standard").html(list[i].standard);
+    		    			$("#challenge").html(list[i].challenge);
+    		    			$("#weight").html(list[i].weight);
+    		    			$("#completion").html(list[i].completion);
+    		    			$("#score").html(list[i].score);
+    		    			$("#superiorGrade").html(list[i].superiorGrade);
+    		    			$("#superiorEvaluation").html(list[i].superiorEvaluation);
+    		    		}
+    		    	}
+    		    },
+    		    error :function(XmlHttpRequest,textStatus, errorThrown){
+    			 	var errMsg = XmlHttpRequest.responseText;
+    			 	console.log(errMsg);
+    		    }
+    		});
+        	$.ajax("/user/gets", {  
+  				type: 'POST',
+  				data : {"id":data.id},  
+  			    dataType : 'json',  
+  			    success: function(resultJson) {
+  			    	if (resultJson.status == ResultStatus.success) {
+  			    		var list = resultJson.result.data;
+    		    		for (var i = 0; i < list.length; i++) {
+    		    			$("#name").html(list[i].name);
+      			    		$("#departmentName").html(list[i].departmentName);
+    		    		}
+  			    	}
+  			    },
+  			    error :function(XmlHttpRequest,textStatus, errorThrown){
+  				 	var errMsg = XmlHttpRequest.responseText;
+  				 	console.log(errMsg);
+  			    }
+  			});
+        	$.ajax("/user/getLevel", {  
+  				type: 'POST',
+  				data : {"id":data.id},  
+  			    dataType : 'json',  
+  			    success: function(resultJson) {
+  			    	if (resultJson.status == ResultStatus.success) {
+  			    		$("#names").html(resultJson.result.names);
+  			    		$("#namess").html(resultJson.result.namess);
+  			    	}
+  			    },
+  			    error :function(XmlHttpRequest,textStatus, errorThrown){
+  				 	var errMsg = XmlHttpRequest.responseText;
+  				 	console.log(errMsg);
+  			    }
+  			});
+        	var myDate = new Date();            
+        	var year=myDate.getFullYear();        //获取当前年
+        	var month=myDate.getMonth()+1;   //获取当前月
+        	var date=myDate.getDate();            //获取当前日
+        	$("#datas").html(year+"年"+month+"月"+date+"日");
+        },
+    });
+    function userList(){
+  		$.ajax("/user/find", {  
+			type: 'POST',
+		    data : {},  
+		    dataType : 'json',  
+		    success: function(resultJson) {
+		    	if (resultJson.status == ResultStatus.success) {
+		    		var html="";
+		    		var list = resultJson.result;
+		    		for (var i = 0; i < list.length; i++) {
+		    			html+="<option value="+list[i].id+">"+list[i].name+"</option>";
+		    		}
+		    		$("#userId").append(html);
+		    	}
+		    },
+		    error :function(XmlHttpRequest,textStatus, errorThrown){
+			 	var errMsg = XmlHttpRequest.responseText;
+			 	console.log(errMsg);
+		    }
+		});
+  	}
+</script>
+</body>
+</html>

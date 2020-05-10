@@ -1,0 +1,114 @@
+.error {
+    color: #ff2e44 !important;
+}
+
+.top-level-menus {
+    justify-content: flex-start;
+}
+
+html {
+    /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
+    -ms-overflow-style: none;
+    /*火狐下隐藏滚动条*/
+    overflow: -moz-scrollbars-none;
+}
+
+.content_2 {
+    height: 100vh;
+}
+
+.win {
+    background-color: #ffffff !important;
+}
+
+.width80 {
+    width: 80px;
+}
+
+.width150 {
+    width: 150px;
+}
+
+.list-table > thead > tr > th {
+    background-color: #F2F2F2 !important;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: #fff;
+}
+
+.v-table-class {
+    margin-top: 10px;
+}
+
+.v-table-header-row > td {
+    background-color: #F2F2F2 !important;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #666666;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+.pagination-container {
+    margin-top: 20px;
+    display: inline-flex;
+}
+
+.pagination-container #pagination {
+
+}
+
+.pagination-container .page-remark {
+    margin-left: 10px;
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.show {
+    display: block !important;
+}
+
+#back-to-top {
+    width: 25px;
+    position: fixed;
+    bottom: 20px;
+    right: 50px;
+    cursor: pointer;
+    text-align: center;
+    _top: expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0)));
+}
+
+.form-control-sm[type=input] {
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+}
+
+.el-table__header > thead > tr > th {
+    background-color: #f2f2f2 !important;
+    color: #66668B !important;
+    font-size: 15px !important;
+}
+
+input::-webkit-input-placeholder { /* WebKit browsers */
+    color: black !important;
+}
+
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: black !important;
+}
+
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: black !important;
+}
+
+input:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: black !important;
+}
+
+input[disabled="disabled"]{
+    color: #999999 !important;
+}

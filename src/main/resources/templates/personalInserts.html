@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link href="/static/ai/templates/inspinia/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/animate.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href='/static/ai/css/element-ui.2.12.0.css'>
+	<link rel="stylesheet" href='/static/ai/plugs/vue-easytable/vue-easytable-master/umd/css/index.css'>
+</head>
+<body>
+<div id="app">
+  <div  class="row">
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-content">
+                <form method="get" id="model">
+                <input v-model="data.id" id="id" name="id" type="text" class="form-control" style="display: none;"/>
+                <input v-model="data.states" id="states" name="states" type="text" class="form-control" style="display: none;"/>
+                <input v-model="data.isScore" id="isScore" name="isScore" type="text" class="form-control" style="display: none;"/>
+                	<div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                    	<label class="col-sm-2 col-form-label">任务</label>
+                        <div class="col-sm-4">
+                        <select name="taskId" id="taskId" readonly
+                                                       class="form-control">
+                        </select>
+                            <span class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group row">
+                    	<label class="col-sm-2 col-form-label">考核维度</label>
+                        <div class="col-sm-4">
+                        <select name="dimension" id="dimension" readonly
+                                                       class="form-control">
+                            <option value="服务目标">服务目标</option>
+                            <option value="职业化目标">职业化目标</option>
+                            <option value="能力提升">能力提升</option>
+                            <option value="关键事件加减分项">关键事件加减分项</option>
+                        </select>
+                            <span class="form-text m-b-none"></span>
+                        </div>
+                        <label class="col-sm-2 col-form-label">绩效指标</label>
+                        <div class="col-sm-4">
+                        <select name="indicatorsId" id="indicatorsId" readonly
+                                                       class="form-control">
+                        </select>
+                            <span class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    	<label class="col-sm-2 col-form-label">评估标准</label>
+                        <div class="col-sm-10">
+                                   <textarea class="form-control" readonly v-model="data.assessment" id="assessment" name="assessment"></textarea>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    	<label class="col-sm-2 col-form-label">未达成</label>
+                        <div class="col-sm-4">
+                            <input v-model="data.lackOf" id="lackOf" name="lackOf" type="text" readonly
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                        <label class="col-sm-2 col-form-label">底线</label>
+                        <div class="col-sm-4">
+                            <input v-model="data.bottomLine" id="bottomLine" name="bottomLine" type="text" readonly
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    	<label class="col-sm-2 col-form-label">达标</label>
+                        <div class="col-sm-4">
+                            <input v-model="data.standard" id="standard" name="standard" type="text" readonly
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                        <label class="col-sm-2 col-form-label">挑战</label>
+                        <div class="col-sm-4">
+                            <input v-model="data.challenge" id="challenge" name="challenge" type="text" readonly
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    	<label class="col-sm-2 col-form-label">分项权重</label>
+                        <div class="col-sm-10">
+                            <input v-model="data.weight" id="weight" name="weight" type="text" readonly
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    	<label class="col-sm-2 col-form-label">完成情况</label>
+                        <div class="col-sm-10">
+                            <input v-model="data.completion" id="completion" name="completion" type="text"
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    	<label class="col-sm-2 col-form-label">自评分</label>
+                        <div class="col-sm-10">
+                            <input v-model="data.score" id="score" name="score" type="text"
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="display: none;" id="two">
+                    	<label class="col-sm-2 col-form-label">直接上级评分</label>
+                        <div class="col-sm-10">
+                            <input v-model="data.superiorGrade" id="superiorGrade" name="superiorGrade" type="text"
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="display: none;" id="three">
+                    	<label class="col-sm-2 col-form-label">直接上级评价</label>
+                        <div class="col-sm-10">
+                            <input v-model="data.superiorEvaluation" id="superiorEvaluation" name="superiorEvaluation" type="text"
+                                   placeholder=""
+                                   class="form-control"/>
+                            <span
+                                    class="form-text m-b-none"></span>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group  row">
+                    	<label class="col-sm-2 col-form-label">不通过原因</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" readonly id="remark" ></textarea>
+                        </div>
+                    </div> -->
+                    <div class="hr-line-dashed"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer" style="position: fixed;bottom: 0px;background-color:#f8f8f8;z-index:20000 ;" >
+    <div class="text-right">
+        <button type="button" class="btn btn-w-m btn-primary" @click="submit">提交</button>
+        <button type="button" class="btn btn-w-m btn-default" onclick="closeWin(true);">返回</button>
+    </div>
+</div>
+</div>
+</body>
+	<script src="/static/ai/templates/inspinia/js/jquery-3.1.1.min.js"></script>
+	<script src="/static/ai/plugs/layer/layer.js"></script>
+	<script src='/static/ai/js/jquery-cookie.min.js'></script>
+	<script src='/static/ai/js/axios.min.js'></script>
+	<script src='/static/ai/js/base.js'></script>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+ 	 var data = {
+ 		id:'[[${pId}]]',
+ 		assessment: '',
+ 		lackOf:'',
+ 		bottomLine:'',
+ 		standard:'',
+ 		challenge:'',
+ 		weight:'',
+ 		completion:'',
+ 		score:'',
+ 		superiorGrade:'',
+ 		superiorEvaluation:'',
+ 		states:0,
+ 		isScore:0,
+	  };
+  	var app = new Vue({
+      el: '#app',
+      data: {data: data},
+      methods: {
+    	  submit: function () {
+    		  $.ajax("/performances/updateScore", {  
+    				type: 'POST',
+    			    data : $("#model").serialize(),  
+    			    dataType : 'json',  
+    			    success: function(resultJson) {
+    			    	if (resultJson.status == ResultStatus.success) {
+    			    		alertMsg.success('操作成功', function () {
+    	                        closeWin(true);
+    	                    });
+    			    	}
+    			    },
+    			    error :function(XmlHttpRequest,textStatus, errorThrown){
+    				 	var errMsg = XmlHttpRequest.responseText;
+    				 	console.log(errMsg);
+    			    }
+    			});
+          },
+
+      },
+      mounted() {
+    	  departmentList();
+    	  taskList();
+    	  //userList();
+    	  if(data.id != ""){
+    		  $.ajax("/performances/get", {  
+  				type: 'POST',
+  			    data : {id:data.id},  
+  			    dataType : 'json',  
+  			    success: function(resultJson) {
+  			    	if (resultJson.status == ResultStatus.success) {
+  			    		data.assessment = resultJson.result.assessment;
+  			    		data.lackOf = resultJson.result.lackOf;
+  			    		data.bottomLine = resultJson.result.bottomLine;
+  			    		data.standard = resultJson.result.standard;
+  			    		data.challenge = resultJson.result.challenge;
+  			    		data.weight = resultJson.result.weight;
+  			    		data.completion = resultJson.result.completion;
+  			    		data.score = resultJson.result.score;
+  			    		data.superiorGrade = resultJson.result.superiorGrade;
+  			    		data.superiorEvaluation = resultJson.result.superiorEvaluation;
+  			    		$("#dimension").find("option[value = '"+resultJson.result.dimension+"']").attr("selected","selected");
+  		                $("#indicatorsId").find("option[value = '"+resultJson.result.indicatorsId+"']").attr("selected","selected");
+  		                $("#taskId").find("option[value = '"+resultJson.result.taskId+"']").attr("selected","selected");
+  		                $("#remark").text(resultJson.result.note);
+  		            	data.states = resultJson.result.states;
+  		            	data.isScore = resultJson.result.isScore;
+  			    	}
+  			    },
+  			    error :function(XmlHttpRequest,textStatus, errorThrown){
+  				 	var errMsg = XmlHttpRequest.responseText;
+  				 	console.log(errMsg);
+  			    }
+  			});
+    	  }
+      },
+  });
+  	function departmentList(){
+  		$.ajax("/indicators/find", {  
+			type: 'POST',
+		    data : {},  
+		    dataType : 'json',  
+		    success: function(resultJson) {
+		    	if (resultJson.status == ResultStatus.success) {
+		    		var html="";
+		    		var list = resultJson.result;
+		    		for (var i = 0; i < list.length; i++) {
+		    			html+="<option value="+list[i].id+">"+list[i].name+"</option>";
+		    		}
+		    		$("#indicatorsId").append(html);
+		    	}
+		    },
+		    error :function(XmlHttpRequest,textStatus, errorThrown){
+			 	var errMsg = XmlHttpRequest.responseText;
+			 	console.log(errMsg);
+		    }
+		});
+  	}
+  	function userList(){
+  		$.ajax("/user/find", {  
+			type: 'POST',
+		    data : {},  
+		    dataType : 'json',  
+		    success: function(resultJson) {
+		    	if (resultJson.status == ResultStatus.success) {
+		    		var html="";
+		    		var list = resultJson.result;
+		    		for (var i = 0; i < list.length; i++) {
+		    			html+="<option value="+list[i].id+">"+list[i].name+"</option>";
+		    		}
+		    		$("#userId").append(html);
+		    	}
+		    },
+		    error :function(XmlHttpRequest,textStatus, errorThrown){
+			 	var errMsg = XmlHttpRequest.responseText;
+			 	console.log(errMsg);
+		    }
+		});
+  	}
+  	function taskList(){
+  		$.ajax("/task/find", {  
+			type: 'POST',
+		    data : {},  
+		    dataType : 'json',  
+		    success: function(resultJson) {
+		    	if (resultJson.status == ResultStatus.success) {
+		    		var html="";
+		    		var list = resultJson.result;
+		    		for (var i = 0; i < list.length; i++) {
+		    			html+="<option value="+list[i].id+">"+list[i].name+"</option>";
+		    		}
+		    		$("#taskId").append(html);
+		    	}
+		    },
+		    error :function(XmlHttpRequest,textStatus, errorThrown){
+			 	var errMsg = XmlHttpRequest.responseText;
+			 	console.log(errMsg);
+		    }
+		});
+  	}
+  </script>
+</html>

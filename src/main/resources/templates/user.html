@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绩效管理系统</title>
+
+    <link href="/static/ai/templates/inspinia/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/animate.css" rel="stylesheet">
+    <link href="/static/ai/templates/inspinia/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href='/static/ai/css/element-ui.2.12.0.css'>
+	<link rel="stylesheet" href='/static/ai/plugs/vue-easytable/vue-easytable-master/umd/css/index.css'>
+
+</head>
+
+<body>
+    <div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <img alt="image" class="rounded-circle" src="/static/ai/templates/inspinia/img/profile_small.jpg"/>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="block m-t-xs font-bold"><label th:text="${session.userEntitys.name}"></label></span>
+                        </a>
+                    </div>
+                </li>
+                <!-- <li class="active">
+                    <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">系统管理</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li class="active"><a href="/user">用户管理</a></li>
+                        <li><a href="/role">角色管理</a></li>
+                        <li><a href="/department">组织管理</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">绩效管理</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/indicators">绩效指标</a></li>
+                        <li><a href="/performances">个人绩效目标</a></li>
+                        <li><a href="/report">报表</a></li>
+                    </ul>
+                </li> -->
+            </ul>
+
+        </div>
+    </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            <form role="search" class="navbar-form-custom" action="search_results.html">
+                <div class="form-group">
+                    <input type="text" placeholder="" class="form-control" name="top-search" id="top-search">
+                </div>
+            </form>
+        </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <a href="/">
+                        <i class="fa fa-sign-out"></i> Log out
+                    </a>
+                </li>
+            </ul>
+
+        </nav>
+        </div>
+        <div id="app" class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-content">
+
+                <el-row :gutter="20">
+                    <el-col :span="16">
+                        <el-form :inline="true" id="modelForm">
+                            <el-form-item label="">
+                                <el-input placeholder="请输入姓名" v-model="data.name" id="name" name="name"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="search"><i class="fa fa-search"></i>查询</el-button>
+                                </el-button>
+                                <el-button type="success" @click="dialogFormVisible"><i class="el-icon-plus"></i>添加</el-button>
+                                </el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                    <el-col align="right" :span="8">
+                        <el-button type="success" @click="refresh"><span class="fa fa-refresh"></span>刷新
+                        </el-button>
+                    </el-col>
+                </el-row>
+
+                <template>
+                    <el-table
+                            :data="data.list"
+                            :height="data.tableHeight"
+                            stripe
+                            style="width: 100%;margin-top: 20px;">
+                        <el-table-column
+                                prop="id"
+                                align="left"
+                                label="#"
+                                width="80">
+                        </el-table-column>
+                        <el-table-column
+                                align="left"
+                                label="姓名">
+                            <template slot-scope="scope">
+                                {{scope.row.name}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                align="left"
+                                label="部门">
+                            <template slot-scope="scope">
+                                {{scope.row.departmentName}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                align="left"
+                                label="角色">
+                            <template slot-scope="scope">
+                                {{scope.row.roleName}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                align="left"
+                                label="账号">
+                            <template slot-scope="scope">
+                                {{scope.row.account}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                align="left"
+                                label="密码">
+                            <template slot-scope="scope">
+                                {{scope.row.pwd}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                align="left"
+                                fixed="right"
+                                label="操作">
+                            <template slot-scope="scope">
+                                <el-row>
+                                    <el-button type="text" @click="changeInfo(scope.row)"><i class="fa fa-edit"></i>编辑
+                                    </el-button>
+                                    <el-button type="text" @click="deleteAccount(scope.row)"><i class="fa fa-times"></i>删除
+                                    </el-button>
+                                </el-row>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </template>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+        </div>
+        </div>
+    <!-- Mainly scripts -->
+    <script src="/static/ai/templates/inspinia/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/ai/templates/inspinia/js/popper.min.js"></script>
+    <script src="/static/ai/templates/inspinia/js/bootstrap.js"></script>
+    <script src="/static/ai/templates/inspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/static/ai/templates/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Peity -->
+    <script src="/static/ai/templates/inspinia/js/plugins/peity/jquery.peity.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="/static/ai/templates/inspinia/js/inspinia.js"></script>
+    <script src="/static/ai/templates/inspinia/js/plugins/pace/pace.min.js"></script>
+    <!-- iCheck -->
+    <script src="/static/ai/templates/inspinia/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- Peity -->
+    <script src="/static/ai/templates/inspinia/js/demo/peity-demo.js"></script>
+    
+    <script src="/static/ai/plugs/layer/layer.js"></script>
+	<script src='/static/ai/js/jquery-cookie.min.js'></script>
+    <script src='/static/ai/js/vue-dev.js'></script>
+    <script src='/static/ai/js/axios.min.js'></script>
+	<script src='/static/ai/js/jquery.validate.min.js'></script>
+	<script src='/static/ai/js/messages_zh.min.js'></script>
+	<script src='/static/ai/js/mloading.js'></script>
+	<script src='/static/ai/js/base.js'></script>
+	<script src='/static/ai/js/element-ui.2.12.0.js'></script>
+
+<script>
+$(function(){
+	$.ajax("/menu/menuList", {  
+		type: 'POST',
+	    data : {},  
+	    dataType : 'json',  
+	    success: function(resultJson) {
+	    	console.log(resultJson);
+	    	if (resultJson.status == ResultStatus.success) {
+	    		console.log(resultJson);
+	    		var menuEntities = resultJson.result.menuEntities;
+	    		var menuLists = resultJson.result.menuLists;
+                var html="";
+                var htmlNull = 0;
+                for (var i = 0; i < menuLists.length; i++) {
+                	if(htmlNull==0){
+                		html="";
+                	}
+                	html+="<li class='active'><a href=#><i class='fa "+menuLists[i].icon+"'></i> <span class='nav-label'>"+menuLists[i].name+"</span> <span class='fa arrow'></span></a>";
+                	html+="<ul class='nav nav-second-level collapse'>";
+                	for (var j = 0; j < menuEntities.length; j++) {
+                		if(menuEntities[j].menuId == menuLists[i].id){
+                			html+="<li><a href="+menuEntities[j].url+">"+menuEntities[j].name+"</a></li>";
+                			htmlNull = 1;
+                		}
+                	}
+                    html+="</ul>";
+                    html+="</li>";
+                }
+                $('#side-menu').metisMenu('dispose');
+                $("#side-menu").append(html);
+                $('#side-menu').metisMenu();
+	    	}
+	    },
+	    error :function(XmlHttpRequest,textStatus, errorThrown){
+		 	var errMsg = XmlHttpRequest.responseText;
+		 	console.log(errMsg);
+	    }
+	});
+})
+var data = {
+        name: '',
+        list: [],
+    };
+    var app = new Vue({
+        el: '#app',
+        data: {data: data},
+        methods: {
+            search: function () {
+                getData();
+            },
+            refresh: function () {
+                getData();
+            },
+            dialogFormVisible: function (row) {
+                openWin('添加用户信息', '/userInsert', '50%', '50%');
+            },
+            changeInfo: function (row) {
+                openWin('修改用户信息', '/userInsert?id=' + row.id, '50%', '50%');
+            },
+            deleteAccount: function (row) {
+                var id = row.id;
+                alertMsg.confirm('确定删除用户吗？', function () {
+                    $.ajax("/user/delete", {  
+                		type: 'POST',
+                	    data : {id:id},  
+                	    dataType : 'json',  
+                	    success: function(resultJson) {
+                	    	if (resultJson.status == ResultStatus.success) {
+                                alertMsg.success('删除成功', function () {
+                                    getData(false);
+                                });
+                            } else {
+                                alertMsg.error(resultJson.msg);
+                            }
+                	    },
+                	    error :function(XmlHttpRequest,textStatus, errorThrown){
+                		 	var errMsg = XmlHttpRequest.responseText;
+                		 	console.log(errMsg);
+                	    }
+                	});
+                });
+            },
+        },
+        mounted() {
+            getData();
+        },
+    });
+
+    /**
+     * 获取分页数据
+     */
+    function getData() {
+        $.ajax("/user/list", {  
+    		type: 'POST',
+    	    data : $("#modelForm").serialize(),  
+    	    dataType : 'json',  
+    	    success: function(resultJson) {
+    	    	if (resultJson.status == ResultStatus.success) {
+                    //成功获取数据
+                    console.log(resultJson);
+                    var list = resultJson.result.data;
+                    data.list = list;
+                    
+                } else {
+                	console.log(resultJson);
+                    alertMsg.error(resultJson.msg);
+                }
+    	    },
+    	    error :function(XmlHttpRequest,textStatus, errorThrown){
+    		 	var errMsg = XmlHttpRequest.responseText;
+    		 	console.log(errMsg);
+    	    }
+    	});
+    }
+</script>
+</body>
+</html>
